@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>נספח א' - שנת 2026</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background-color: #eee; font-size: 10px; }
+        .page-container {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            margin: auto;
+            padding: 8mm;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+        }
+        
+        .header-top { text-align: center; margin-bottom: 5px; }
+        .header-top h2 { margin: 0; font-size: 14px; text-decoration: underline; font-weight: bold; }
+        .header-right { float: right; font-weight: bold; font-size: 12px; }
+        .balmas { text-align: center; font-weight: bold; margin-bottom: 5px; }
+        .sub-header { text-align: center; font-size: 9px; margin-bottom: 5px; }
+
+        table { width: 100%; border-collapse: collapse; margin-bottom: 5px; }
+        th, td { border: 1px solid #000; padding: 2px; text-align: center; vertical-align: middle; }
+        
+        th, .group-header { background-color: #f0f0f0; font-weight: bold !important; font-size: 9px; height: 20px; }
+        .label-cell { font-weight: bold; background-color: #f9f9f9; font-size: 9px; }
+        
+        .auto-width { width: auto; white-space: nowrap; min-width: 90px; }
+        
+        input, select { width: 100%; border: none; background: transparent; text-align: center; font-family: inherit; font-size: 10px; outline: none; appearance: none; -webkit-appearance: none; }
+        
+        .km-input { 
+            font-weight: bold; 
+            font-size: 11px; 
+            min-width: 40px;
+            padding-right: 2px;
+            padding-left: 2px;
+        }
+
+        .footer-container { display: flex; border: 1px solid #000; margin-top: 5px; min-height: 200px; page-break-inside: avoid; }
+        .footer-section { flex: 1; padding: 5px; border-left: 1px solid #000; font-size: 8.5px; text-align: right; line-height: 1.4; }
+        .footer-section:last-child { border-left: none; }
+        .footer-section h4 { text-decoration: underline; margin: 0 0 5px 0; font-size: 10px; text-align: center; font-weight: bold; }
+        
+        .checkbox-line { margin-bottom: 3px; display: flex; align-items: center; font-weight: bold; }
+        .checkbox-line input[type="checkbox"] { width: 13px; height: 13px; margin-left: 5px; appearance: checkbox; -webkit-appearance: checkbox; cursor: pointer; }
+
+        .sig-container { position: relative; border-bottom: 1px solid #000; background: #fdfdfd; }
+        canvas { cursor: crosshair; }
+        .clear-btn { background: #ff4d4d; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 7px; padding: 1px 4px; margin-right: 4px; }
+        
+        .reset-btn { background: #dc3545; color: white; border: none; border-radius: 4px; padding: 10px 20px; font-weight: bold; cursor: pointer; margin-right: 10px; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .page-container { border: none; width: 100%; margin: 0; }
+            .no-print, .clear-btn, .reset-btn { display: none; }
+            input[type="date"]::-webkit-calendar-picker-indicator { display: none; -webkit-appearance: none; }
+            select { appearance: none; -webkit-appearance: none; border: none; background: transparent; }
+            .auto-width { width: auto !important; }
+            .km-input { border: none; width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-container">
+    <div class="header-right">24-72</div>
+    <div class="balmas">- בלמ"ס -</div>
+    <div class="header-top">
+        <h2>תשלום תוספת אש"ל וקצובת כלכלה</h2>
+        <div class="sub-header">נוסח מעודכן לתאריך: 01/01/2026</div>
+        <h1 style="font-size: 14px; margin: 2px 0; font-weight: bold; text-align: center;">נספח א'</h1>
+        <div style="font-weight: bold; font-size: 11px; text-align: center; margin-bottom: 10px;">חשבון הוצאות אישיות בתפקיד - אזרחים עובדי צה"ל</div>
+    </div>
+
+    <table>
+        <tr>
+            <td style="width: 15%;" class="label-cell">עבור חודש / שנה<br>
+                <div style="display: flex; justify-content: center;">
+                    <select id="reportMonth" class="save-me" style="width: 50%; font-weight: bold;" onchange="syncDatesWithMonth()">
+                        <option value="01">01</option><option value="02">02</option><option value="03">03</option>
+                        <option value="04">04</option><option value="05">05</option><option value="06">06</option>
+                        <option value="07">07</option><option value="08">08</option><option value="09">09</option>
+                        <option value="10">10</option><option value="11">11</option><option value="12" selected>12</option>
+                    </select>
+                    <span> / </span>
+                    <input type="text" id="reportYear" class="save-me" value="2026" style="width: 40%; font-weight: bold;" onchange="syncDatesWithMonth()">
+                </div>
+            </td>
+            <td style="width: 25%;" class="label-cell">מספר זהות<br><input type="text" id="workerID" class="save-me"></td>
+            <td style="width: 20%;" class="label-cell">שם משפחה<br><input type="text" id="lastName" class="save-me"></td>
+            <td style="width: 20%;" class="label-cell">שם פרטי<br><input type="text" id="firstName" class="save-me"></td>
+            <td style="width: 20%;" class="label-cell">תפקיד העובד<br><input type="text" value="בוחן נהיגה" readonly style="font-weight: bold;"></td>
+        </tr>
+    </table>
+
+    <table style="margin-top: -6px;">
+        <tr>
+            <td style="width: 40%;" class="label-cell">כתובת מגורים<br><input type="text" id="address" class="save-me"></td>
+            <td style="width: 15%;" class="label-cell">יחוייש<br><input type="text" id="yihuish" class="save-me"></td>
+            <td style="width: 15%;" class="label-cell">יחידה<br><input type="text" value='מקל"ר 48' readonly style="font-weight: bold;"></td>
+            <td style="width: 15%;" class="label-cell">שעות עבודה רגילות של העובד<br>
+                <div style="display: flex; font-size: 8px;">ימי א'-ה' מ-<input type="text" style="width:25px" value="08:00"> עד-<input type="text" style="width:25px" value="16:30"></div>
+            </td>
+            <td style="width: 15%;" class="label-cell">מטרת הנסיעה<br><input type="text" value="תפקיד" readonly style="font-weight: bold;"></td>
+        </tr>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th rowspan="3" style="width: 25px;">מס' סדיר</th>
+                <th colspan="7" class="group-header">פרטי הנסיעה בתפקיד</th>
+                <th colspan="5" class="group-header">הוצאות</th>
+            </tr>
+            <tr>
+                <th rowspan="2" class="auto-width">תאריך</th>
+                <th rowspan="2" style="width: 45px;">שעת יציאה</th>
+                <th rowspan="2" style="width: 60px;">ממקום</th>
+                <th rowspan="2" class="auto-width">למקום (במידה ונשלח ליחידה צבאית יש לציין שם היחידה)</th>
+                <th rowspan="2" style="width: 60px;">למקום</th>
+                <th rowspan="2" style="width: 45px;">מרחק בק"מ</th>
+                <th rowspan="2" style="width: 45px;">שעת סיום</th>
+                <th rowspan="2" style="width: 40px;">דמי נסיעה (אג')</th>
+                <th colspan="3">כלכלה (סך שעות בתפקיד)</th>
+                <th rowspan="2" style="width: 45px;">דמי לינה במלון (אג')</th>
+            </tr>
+            <tr>
+                <th style="width: 22px;">4</th>
+                <th style="width: 22px;">8</th>
+                <th style="width: 22px;">12</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+
+    <div class="footer-container">
+        <div class="footer-section">
+            <h4>הצהרת העובד/ת</h4>
+            <div class="checkbox-line"><input type="checkbox" class="save-me-check" id="decl1"> נסעתי ברכב פרטי</div>
+            <div class="checkbox-line"><input type="checkbox" class="save-me-check" id="decl2"> נסעתי בתחבורה ציבורית</div>
+            <div class="checkbox-line"><input type="checkbox" class="save-me-check" id="decl3"> נסעתי ברכב צבאי / שכור</div>
+            <p style="margin-top: 5px;">הנני מצהיר/ה בזה כי כל הפרטים שפורטו בטופס זה הם נכונים, שלמים ומדויקים ובימים עבורם הנני מבקש/ת דמי כלכלה, לא התכלכלתי ביחידה כלשהי.</p>
+            
+            <div style="margin-top: 10px;">תאריך: <input type="text" id="sigDate" class="save-me" style="width: 80px; text-align: right; border-bottom: 1px solid #000; font-weight:bold;"></div>
+            
+            <div style="display: flex; align-items: center; margin-top: 3px;">
+                <span>חתימת העובד/ת:</span>
+                <div class="sig-container"><canvas id="workerSig" width="110" height="35"></canvas></div>
+                <button class="clear-btn no-print" onclick="clearSig('workerSig')">נקה</button>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <h4>אישור מפקד ישיר האחראי למילוי דו"ח תעסוקה</h4>
+            <div class="checkbox-line"><input type="checkbox" class="save-me-check" id="cmd1"> העובד/ת נסע ברכב צבאי / שכור כי <span style="border-bottom:1px solid #000; width:50px; display:inline-block;"><input type="text" class="save-me" id="cmdReason" style="width:100%"></span></div>
+            <div class="checkbox-line"><input type="checkbox" class="save-me-check" id="cmd2"> העובד לא נסע ברכב צבאי / שכור</div>
+            <p style="margin-top: 5px;">הנני מצהיר שבדקתי את החשבון ומאשר בזה את אמיתותן ואת זכויותיו של האזרח הנ"ל להוצאות ע"פ פ.מ. 41.0515</p>
+            <div style="margin-top: 15px;">תאריך: __________ חתימה: __________</div>
+            <div style="margin-top: 8px;">שם: __________ דרגה: ______ מ.א.: ______</div>
+        </div>
+
+        <div class="footer-section">
+            <h4>אישור המפקד הממונה בדרגת סא"ל או שהינו אע"צ בכיר בתקן נגב ומעלה</h4>
+            <div style="font-weight: bold; text-align: center;">הנני מאשר בזה את ההוצאות הנ"ל.</div>
+            <div style="margin-top: 5px;">הערות: _________________________________</div>
+            <div style="margin-top: 35px;">תאריך: __________ חתימה: __________</div>
+            <div style="margin-top: 8px;">שם: __________ דרגה: ______ מ.א.: ______</div>
+        </div>
+    </div>
+</div>
+
+<div class="no-print" style="text-align:center; margin-top:20px; padding-bottom: 50px;">
+    <button onclick="saveAndPrint()" style="padding:10px 25px; background:#28a745; color:white; border:none; cursor:pointer; border-radius:4px; font-weight:bold;">🖨️ הדפס ושמור בשם אוטומטי</button>
+    <button onclick="resetForm()" class="reset-btn">🗑️ נקה טופס לחודש חדש</button>
+</div>
+
+<script>
+    const destinations = [
+        { name: "אופקים", km: 115 }, { name: "אילת", km: 350 }, { name: "אשדוד", km: 41 }, { name: "אשקלון", km: 56 },
+        { name: "באר שבע", km: 113 }, { name: "באר שבע בית החייל", km: 113 }, { name: "באר שבע ל\"ג", km: 113 },
+        { name: "בח\"א 6 חצירים", km: 125 }, { name: "בח\"א 8 תל נוף", km: 40 }, { name: "בח\"א 21 טכני", km: 110 },
+        { name: "ביס\"ט 21", km: 110 }, { name: "בית נבאללה", km: 27 }, { name: "בית שמש", km: 55 },
+        { name: "בהל\"צ", km: 288 }, { name: "דימונה", km: 157 }, { name: "הדר יוסף", km: 12 },
+        { name: "חדרה", km: 49 }, { name: "חולון", km: 10 }, { name: "חיפה", km: 100 },
+        { name: "חיפה ל\"ג", km: 110 }, { name: "טבריה", km: 135 }, { name: "טבריה ל\"ג", km: 135 },
+        { name: "יפו", km: 0 }, { name: "ירושלים", km: 65 }, { name: "ירושלים ל\"ג", km: 65 },
+        { name: "כנף 1 רמת דוד", km: 92 }, { name: "כנף 25 רמון", km: 195 }, { name: "כנף 28 נבטים", km: 140 },
+        { name: "כפר סבא", km: 27 }, { name: "לוד", km: 27 }, { name: "מחנה עמוס", km: 92 },
+        { name: "משמר הנגב", km: 113 }, { name: "נבטים", km: 140 }, { name: "נתיבות", km: 100 },
+        { name: "נתניה", km: 32 }, { name: "עיר הבהדים", km: 135 }, { name: "עכו", km: 128 },
+        { name: "עפולה", km: 92 }, { name: "עפולה משא כבד", km: 92 }, { name: "פלמחים", km: 27 },
+        { name: "פתח תקווה", km: 17 }, { name: "קרית גת", km: 71 }, { name: "קרית חיים", km: 118 },
+        { name: "קרית שמונה", km: 191 }, { name: "ראשון לציון", km: 17 }, { name: "רחובות", km: 21 },
+        { name: "רמלה", km: 25 }, { name: "תה\"ש ל\"ג", km: 18 }
+    ].sort((a, b) => a.name.localeCompare(b.name, 'he'));
+
+    // --- Logic for Dates (Sunday) & Auto Sync Last Row ---
+    function handleDateChange(input) {
+        const row = input.closest('tr');
+        const col4 = row.querySelector('.col-4');
+        const col8 = row.querySelector('.col-8');
+        const dateVal = input.value;
+// Sunday check
+        if (dateVal) {
+            // תיקון: פירוק התאריך כדי למנוע בעיות אזורי זמן במובייל
+            const parts = dateVal.split('-'); 
+            // יצירת תאריך לפי שנה, חודש (פחות 1 כי מתחיל מ-0), ויום
+            const date = new Date(parts[0], parts[1] - 1, parts[2]);
+            
+            if (date.getDay() === 0) { // Sunday
+                col4.value = "X"; 
+                col8.value = ""; // No X in 8 on Sunday
+            } else {
+                col4.value = "X"; 
+                col8.value = "X";
+            }
+        }
+        // Sync date from Last Row (23) to Signature Date
+        const allRows = document.querySelectorAll('#tableBody tr');
+        const lastRowIndex = allRows.length - 1; // Row 23 (index 22)
+
+        if (row === allRows[lastRowIndex] && dateVal) {
+            const [y, m, d] = dateVal.split('-');
+            document.getElementById('sigDate').value = `${d}/${m}/${y}`;
+        } else if (row === allRows[lastRowIndex] && !dateVal) {
+             document.getElementById('sigDate').value = "";
+        }
+
+        saveFormData(); // Save on date change
+    }
+
+    // --- Signature ---
+    function setupSignature(id) {
+        const canvas = document.getElementById(id);
+        const ctx = canvas.getContext("2d");
+        let drawing = false;
+        
+        const savedSig = localStorage.getItem('signature_' + id);
+        if (savedSig) {
+            const img = new Image();
+            img.onload = () => ctx.drawImage(img, 0, 0);
+            img.src = savedSig;
+        }
+
+        const getPos = (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = (e.touches ? e.touches[0].clientX : e.clientX);
+            const clientY = (e.touches ? e.touches[0].clientY : e.clientY);
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        };
+        const start = (e) => { drawing = true; ctx.beginPath(); const pos = getPos(e); ctx.moveTo(pos.x, pos.y); e.preventDefault(); };
+        const move = (e) => { 
+            if (!drawing) return; 
+            const pos = getPos(e); 
+            ctx.lineTo(pos.x, pos.y); 
+            ctx.stroke(); 
+            e.preventDefault(); 
+        };
+        const stop = () => { 
+            if(drawing) {
+                drawing = false; 
+                localStorage.setItem('signature_' + id, canvas.toDataURL());
+            }
+        };
+        canvas.addEventListener("mousedown", start); canvas.addEventListener("mousemove", move); window.addEventListener("mouseup", stop);
+        canvas.addEventListener("touchstart", start); canvas.addEventListener("touchmove", move); canvas.addEventListener("touchend", stop);
+        ctx.lineWidth = 1.5; ctx.strokeStyle = "#000";
+    }
+
+    function clearSig(id) { 
+        document.getElementById(id).getContext("2d").clearRect(0, 0, 110, 35); 
+        localStorage.removeItem('signature_' + id);
+    }
+
+    // --- Form Saving & Loading ---
+    function saveFormData() {
+        document.querySelectorAll('.save-me').forEach(input => localStorage.setItem(input.id, input.value));
+        document.querySelectorAll('.save-me-check').forEach(input => localStorage.setItem(input.id, input.checked));
+        
+        const rowsData = [];
+        document.querySelectorAll('#tableBody tr').forEach((row) => {
+            const rowObj = {
+                date: row.querySelector('.row-date').value,
+                timeOut: row.querySelector('.time-out').value,
+                placeOut: row.querySelector('.place-out').value,
+                target: row.querySelector('.target-select').value,
+                placeIn: row.querySelector('.place-in').value,
+                km: row.querySelector('.km-input').value,
+                timeIn: row.querySelector('.time-in').value,
+                costBus: row.querySelector('.cost-bus').value,
+                col4: row.querySelector('.col-4').value,
+                col8: row.querySelector('.col-8').value,
+                costHotel: row.querySelector('.cost-hotel').value
+            };
+            rowsData.push(rowObj);
+        });
+        localStorage.setItem('tableRows_23', JSON.stringify(rowsData)); 
+    }
+
+    function loadFormData() {
+        document.querySelectorAll('.save-me').forEach(input => {
+            if (localStorage.getItem(input.id)) input.value = localStorage.getItem(input.id);
+        });
+        document.querySelectorAll('.save-me-check').forEach(input => {
+            if (localStorage.getItem(input.id) === 'true') input.checked = true;
+        });
+
+        const savedRows = JSON.parse(localStorage.getItem('tableRows_23'));
+        const rows = document.querySelectorAll('#tableBody tr');
+        if (savedRows && savedRows.length > 0) {
+            rows.forEach((row, i) => {
+                if (savedRows[i]) {
+                    const data = savedRows[i];
+                    row.querySelector('.row-date').value = data.date || "";
+                    row.querySelector('.time-out').value = data.timeOut || "08:00";
+                    row.querySelector('.place-out').value = data.placeOut || "ת\"א";
+                    row.querySelector('.target-select').value = data.target || "";
+                    row.querySelector('.place-in').value = data.placeIn || "ת\"א";
+                    row.querySelector('.km-input').value = data.km || "";
+                    row.querySelector('.time-in').value = data.timeIn || "16:30";
+                    row.querySelector('.cost-bus').value = data.costBus || "";
+                    row.querySelector('.col-4').value = data.col4 || "X";
+                    row.querySelector('.col-8').value = data.col8 || "X";
+                    row.querySelector('.cost-hotel').value = data.costHotel || "";
+                }
+            });
+        }
+    }
+
+    function resetForm() {
+        if(confirm("האם אתה בטוח שברצונך לנקות את כל הנתונים ולהתחיל חודש חדש?")) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
+
+    function syncDatesWithMonth() {
+        const month = document.getElementById('reportMonth').value;
+        const year = document.getElementById('reportYear').value;
+        const minDate = `${year}-${month}-01`;
+        const lastDayObj = new Date(year, month, 0); 
+        const lastDay = lastDayObj.getDate();
+        const maxDate = `${year}-${month}-${lastDay}`;
+        
+        document.querySelectorAll('.row-date').forEach(input => { 
+            input.min = minDate; input.max = maxDate; 
+        });
+        saveFormData();
+    }
+
+    function createRow(index) {
+        let optionsHtml = '<option value="">בחר יעד...</option>';
+        destinations.forEach(d => optionsHtml += `<option value="${d.name}" data-km="${d.km}">${d.name}</option>`);
+        return `<tr>
+            <td><b>${index}</b></td>
+            <td class="auto-width"><input type="date" class="row-date" onchange="handleDateChange(this)"></td>
+            <td><input type="text" class="time-out" value="08:00"></td>
+            <td><input type="text" class="place-out" value='ת"א'></td>
+            <td class="auto-width">
+                <select class="target-select" onchange="const row=this.closest('tr'); const opt=this.options[this.selectedIndex]; if(this.value) row.querySelector('.km-input').value=opt.getAttribute('data-km'); saveFormData();">
+                    ${optionsHtml}
+                </select>
+            </td>
+            <td><input type="text" class="place-in" value='ת"א'></td>
+            <td><input type="text" class="km-input"></td>
+            <td><input type="text" class="time-in" value="16:30"></td>
+            <td><input type="number" class="cost-bus"></td>
+            <td><input type="text" class="col-4" value="X" style="font-weight:bold;"></td>
+            <td><input type="text" class="col-8" value="X" style="font-weight:bold;"></td>
+            <td></td>
+            <td><input type="number" class="cost-hotel"></td>
+        </tr>`;
+    }
+
+    function saveAndPrint() {
+        saveFormData(); 
+        const lname = document.getElementById('lastName').value || "עובד";
+        const fname = document.getElementById('firstName').value || "";
+        const dateInputs = Array.from(document.querySelectorAll('.row-date')).map(i => i.value).filter(v => v).sort();
+        let dateSuffix = "";
+        if (dateInputs.length > 0) {
+            const first = dateInputs[0].split('-').reverse().join('-');
+            const last = dateInputs[dateInputs.length - 1].split('-').reverse().join('-');
+            dateSuffix = `_${first}_עד_${last}`;
+        }
+        document.title = `${lname}_${fname}${dateSuffix}_טופס_כלכלה`;
+        window.print();
+    }
+
+    const tbody = document.getElementById('tableBody');
+    // Generating 23 rows
+    for(let i=1; i<=23; i++) tbody.innerHTML += createRow(i);
+    
+    window.onload = () => { 
+        loadFormData(); 
+        syncDatesWithMonth(); 
+        setupSignature('workerSig');
+        
+        document.body.addEventListener('input', function(e) {
+            if(e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') {
+                saveFormData();
+            }
+        });
+    };
+</script>
+</body>
+</html>
